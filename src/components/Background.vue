@@ -27,7 +27,7 @@ export default {
     searchPhotos () {
       this.$http.get(`${this.unsplashApi}&query=${this.tags}`).then(response => {
         this.photos = response.body.results
-        this.currentPhoto = this.photos[Math.floor((Math.random() * 10) + 1)]
+        this.currentPhoto = this.photos[Math.floor((Math.random() * response.body.results.length) + 1)]
       })
     }
   }
