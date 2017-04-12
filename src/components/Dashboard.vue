@@ -1,11 +1,16 @@
 <template>
   <div id="dashboard">
+    <background v-bind:tags="settings.background.tags"></background>
+
     <div id="dashboard-plugins">
       <div id="settings-wrapper">
         <div id="settings-content" v-if="settings.enabled">
           <span @click="settings.clock.enabled = !settings.clock.enabled" class="clock-toggle toggle">Toggle clock</span>
           <span @click="settings.weather.enabled = !settings.weather.enabled" class="weather-toggle toggle">Toggle weather</span>
-
+          <div>
+            <label for="tags">Asiasanat kuville</label>
+            <input id="tags" type="text" v-model="settings.background.tags"/>
+          </div>
           <button type="button" @click="save()">Tallenna</button>
           <button type="button" @click="clear()">Unohda</button>
         </div>
@@ -28,12 +33,14 @@
 <script>
 import Clock from '@/components/Clock'
 import Weather from '@/components/Weather'
+import Background from '@/components/Background'
 
 export default {
   name: 'dashboard',
   components: {
     'clock': Clock,
-    'weather': Weather
+    'weather': Weather,
+    'background': Background
   },
   methods: {
     clear () {
@@ -58,6 +65,11 @@ export default {
         latitude: '',
         longitude: '',
         enabled: false,
+        background: {
+          tags: [
+
+          ]
+        },
         clock: {
           enabled: true
         },
@@ -97,6 +109,10 @@ html,body {
   height: 100%;
 }
 
+#dashboard {
+  position: relative;
+}
+
 #dashboard-plugins {
   display: flex;
   align-items: center;
@@ -115,6 +131,7 @@ html,body {
 }
 
 .wrapper {
+  z-index: 999;
   align-self: flex-end;
   margin: 10px 20px;
   padding: 30px;
