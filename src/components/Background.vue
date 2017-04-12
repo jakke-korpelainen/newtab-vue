@@ -1,7 +1,10 @@
 <template>
   <div id="background" v-if="currentPhoto" v-bind:style="{backgroundImage: 'url(' + currentPhoto.urls.regular + ')'}">
     <!--<h2 v-html="tags"></h2>-->
-    <p class="background-author">Photo by <a v-bind:href="currentPhoto.user.links.html"><span v-html="currentPhoto.user.username"></span></a> / <a href="http://unsplash.com">Unsplash</a></p>
+    <p class="background-author">
+      Photo by <a v-bind:href="currentPhoto.user.links.html"><span v-html="currentPhoto.user.username"></span></a> / 
+      <a href="http://unsplash.com">Unsplash</a> / <a href="#" @click.prevent="randomizePhoto()">randomize photo</a>
+    </p>
   </div>
 </template>
 <script>
@@ -24,10 +27,13 @@ export default {
     }
   },
   methods: {
+    randomizePhoto () {
+      this.currentPhoto = this.photos[Math.floor((Math.random() * this.photos.length - 1) + 1)]
+    },
     searchPhotos () {
       this.$http.get(`${this.unsplashApi}&query=${this.tags}`).then(response => {
         this.photos = response.body.results
-        this.currentPhoto = this.photos[Math.floor((Math.random() * response.body.results.length) + 1)]
+        this.randomizePhoto()
       })
     }
   }
