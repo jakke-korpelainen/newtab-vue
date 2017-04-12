@@ -1,6 +1,11 @@
 # newtab-vue
 
-> Locally hosed alternative for a New Tab -page for Browsers.
+Locally hosted alternative for a New Tab -page for Browsers. Developed for personal use. Decided to remake with Vue the one I made previously with React. Created using vue-loader, links at the bottom below.
+
+## Features/Tech 
+- Local time & date (using moment)
+- Forecast from OpenWeatherMap,
+- Randomized background for your query (e.g. cities) from Unsplash API
 
 ## Build Setup
 
