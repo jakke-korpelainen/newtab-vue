@@ -9,7 +9,7 @@
     </div>
     <div class="forecast" v-if="forecast">
       <h2 class="forecast-wind" v-html="wind"></h2>
-      <h3><span>Tuulen nopeus</span></h3>
+      <h3><span>Wind speed</span></h3>
     </div>
   </div>
 </template>

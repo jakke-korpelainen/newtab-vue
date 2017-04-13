@@ -25,7 +25,7 @@ export default {
     }
   },
   mounted () {
-    moment.locale('fi')
+    moment.locale('en')
     this.interval = setInterval(this.getTime, 1000)
     this.getTime()
     this.getDate()

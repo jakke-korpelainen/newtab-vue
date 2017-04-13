@@ -5,17 +5,17 @@
     <div id="dashboard-plugins">
       <div id="settings-wrapper">
         <div id="settings-content" v-if="settings.enabled">
-          <span @click="settings.clock.enabled = !settings.clock.enabled" class="clock-toggle toggle">Toggle clock</span>
-          <span @click="settings.weather.enabled = !settings.weather.enabled" class="weather-toggle toggle">Toggle weather</span>
+          <button type="button" @click.prevent="settings.clock.enabled = !settings.clock.enabled" class="clock-toggle button">Toggle clock</button>
+          <button type="button" @click.prevent="settings.weather.enabled = !settings.weather.enabled" class="weather-toggle button">Toggle weather</button>
           <div>
-            <label for="tags">Asiasanat kuville</label>
-            <input id="tags" type="text" v-model="settings.background.tags"/>
+            <label for="tags" class="label">Tags</label>
+            <input id="tags" class="text" type="text" v-model="settings.background.tags"/>
           </div>
-          <button type="button" @click="save()">Tallenna</button>
-          <button type="button" @click="clear()">Unohda</button>
+          <button type="button" @click.prevent="save()" class="button">Save</button>
+          <button type="button" @click.prevent="clear()" class="button">Forget</button>
         </div>
 
-        <span @click="settings.enabled = !settings.enabled" class="settings-toggle toggle">{{ settings.enabled ? 'X' : 'Asetukset'}}</span>
+        <button @click.prevent="settings.enabled = !settings.enabled" class="settings-toggle button">{{ settings.enabled ? 'X' : 'Config'}}</button>
       </div>
       
 
@@ -130,15 +130,47 @@ html,body {
 }
 
 #settings-content {
+  color: #000;
   position: absolute;
-  left: 80px;
-  top: 70px;
+  left: 50px;
+  top: -40px;    
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .settings-toggle {
+  color: #ccc;
   position: absolute;
-  left: 50px;
-  top: 70px;
+  left: 0;
+  top: -40px;
+}
+
+.label, .button, .text {
+  font-variant: small-caps;
+  text-transform: lowercase;
+  font-size: 12px;
+}
+
+.button {
+  background: white;
+  border: 1px solid #d1d1d1;
+  padding: 5px;
+}
+
+.button+.button {
+  margin-left: -1px;
+  margin-right: 20px;
+}
+
+#tags {
+  color: #666;
+  padding: 5px;
+  border: 1px solid #d1d1d1;
+  margin-right: 20px;
 }
 
 .wrapper {
