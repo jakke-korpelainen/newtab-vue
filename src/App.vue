@@ -26,10 +26,8 @@ html,body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background: #000;
   color: #fff;
-  height: calc(100vh - 140px);
-  margin: 60px 40px 80px 40px;
+  height: 100%;
 }
 small {
   font-size: 60%;

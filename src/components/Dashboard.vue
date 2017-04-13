@@ -1,31 +1,42 @@
 <template>
-  <div id="dashboard">
-    <background v-bind:timeout="settings.background.timeout" v-bind:tags="settings.background.tags"></background>
+  <div id="pattern" v-bind:style="pattern">
+    <div id="dashboard">
+      <background v-bind:timeout="settings.background.timeout" v-bind:tags="settings.background.tags"></background>
 
-    <div id="dashboard-plugins">
-      <div id="settings-wrapper">
-        <transition name="fade">
-          <div id="settings-content" v-if="settings.enabled">
-            <button type="button" v-bind:class="{ active : settings.clock.enabled}" @click.prevent="settings.clock.enabled = !settings.clock.enabled" class="clock-toggle button">Clock</button>
-            <button type="button" v-bind:class="{ active : settings.weather.enabled}" @click.prevent="settings.weather.enabled = !settings.weather.enabled" class="weather-toggle button">Weather</button>
-            <div>
-              <label for="tags" class="label">Tags</label>
-              <input id="tags" class="text" type="text" v-on:blur="settings.background.tags = settings.tags" v-model="settings.tags"/>
+      <div id="dashboard-plugins">
+        <div id="settings-wrapper">
+          <transition name="fade">
+            <div id="settings-content" v-if="settings.enabled">
+              <button type="button" v-bind:class="{ active : settings.clock.enabled}" @click.prevent="settings.clock.enabled = !settings.clock.enabled" class="clock-toggle button">Clock</button>
+              <button type="button" v-bind:class="{ active : settings.weather.enabled}" @click.prevent="settings.weather.enabled = !settings.weather.enabled" class="weather-toggle button">Weather</button>
+              <div id="tags-selection">
+                <label for="tags" class="label">Tags</label>
+                <input id="tags" class="text" type="text" v-on:blur="settings.background.tags = settings.tags" v-model="settings.tags"/>
+              </div>
+              <div id="pattern-selection">
+                <label class="label">Pattern</label>
+
+                <input id="pattern-none" class="radio" type="radio" v-model="settings.background.selectedPattern"/>
+                <label for="pattern-none" class="label">None</label>
+
+                <input id="pattern-1" class="radio" type="radio" v-bind:value="settings.background.patterns.topography" v-model="settings.background.selectedPattern"/>
+                <label for="pattern-1" class="label">Topography</label>
+              </div>
+              <button type="button" @click.prevent="save()" class="button">Save</button>
+              <button type="button" @click.prevent="clear()" class="button">Forget</button>
             </div>
-            <button type="button" @click.prevent="save()" class="button">Save</button>
-            <button type="button" @click.prevent="clear()" class="button">Forget</button>
-          </div>
-        </transition>
-        
-        <button @click.prevent="settings.enabled = !settings.enabled" class="settings-toggle button">{{ settings.enabled ? 'X' : 'C'}}</button>
-      </div>
+          </transition>
+          
+          <button @click.prevent="settings.enabled = !settings.enabled" class="settings-toggle button">{{ settings.enabled ? 'X' : 'C'}}</button>
+        </div>
 
-      <div id="clock-wrapper" class="wrapper">
-        <clock v-if="settings.clock.enabled"></clock>
-      </div>
+        <div id="clock-wrapper" class="wrapper">
+          <clock v-if="settings.clock.enabled"></clock>
+        </div>
 
-      <div id="weather-wrapper" class="wrapper">
-        <weather v-if="settings.weather.enabled" v-bind:location="{latitude: settings.latitude, longitude: settings.longitude}"></weather>
+        <div id="weather-wrapper" class="wrapper">
+          <weather v-if="settings.weather.enabled" v-bind:location="{latitude: settings.latitude, longitude: settings.longitude}"></weather>
+        </div>
       </div>
     </div>
   </div>
@@ -52,6 +63,10 @@ export default {
         tags: '',
         enabled: false,
         background: {
+          selectedPattern: null,
+          patterns: {
+            topography: 'https://www.toptal.com/designers/subtlepatterns/patterns/topography.png'
+          },
           tags: '',
           timeout: 1000
         },
@@ -63,6 +78,16 @@ export default {
           interval: 60000
         }
       }
+    }
+  },
+  computed: {
+    pattern () {
+      if (this.settings.background.selectedPattern) {
+        return {
+          background: 'repeat left top url(' + this.settings.background.selectedPattern + ')'
+        }
+      }
+      return null
     }
   },
   methods: {
@@ -136,6 +161,11 @@ html,body {
   min-height: 100%;
 }
 
+#pattern {
+  height: calc(100vh - 140px);
+  padding: 60px 40px 80px 40px;
+}
+
 #dashboard,
 #dashboard-plugins {
   height: 100%;
@@ -174,6 +204,19 @@ html,body {
   font-variant: small-caps;
   text-transform: lowercase;
   font-size: 12px;
+}
+
+.radio {
+  margin: 0 5px;
+  vertical-align: middle;
+}
+
+.radio:first-of-type {
+  margin-left: 10px;
+}
+
+.radio+.label:last-of-type {
+  margin-right: 20px;
 }
 
 .button {

@@ -79,27 +79,15 @@ export default {
 }
 
 .background-author {
-  bottom: 0;
+  text-align: right;
   right: 0;
   top: -50px;
-  left: 50%;
   color: #ccc;
   position: absolute;
-  margin-left: -25%;
-  width:50%;
 }
-
 
 .background-author a {
   color: #333;
-}
-
-@media (max-width: 1400px) {
-  .background-author {
-    text-align: right;
-    left: initial;
-    right: 0;
-  }
 }
 
 </style>
