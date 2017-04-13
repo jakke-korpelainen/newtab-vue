@@ -23,8 +23,13 @@ export default {
   },
   watch: {
     tags (value) {
-      this.searchPhotos()
+      if (this.tags !== value) {
+        this.searchPhotos()
+      }
     }
+  },
+  mounted () {
+    this.searchPhotos()
   },
   methods: {
     randomizePhoto () {

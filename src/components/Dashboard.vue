@@ -70,9 +70,7 @@ export default {
         longitude: '',
         enabled: false,
         background: {
-          tags: [
-
-          ]
+          tags: 'hongkong'
         },
         clock: {
           enabled: true
