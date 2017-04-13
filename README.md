@@ -7,6 +7,11 @@ Locally hosted alternative for a New Tab -page for Browsers. Developed for perso
 - Forecast from OpenWeatherMap,
 - Randomized background for your query (e.g. cities) from Unsplash API
 
+## Screenshots
+
+![Scene with options open](http://i.imgur.com/zgie8bP.jpg)
+![Scene with options closed](http://i.imgur.com/S5ArSCI.jpg)
+
 ## Build Setup
 
 ``` bash
