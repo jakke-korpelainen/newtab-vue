@@ -101,8 +101,20 @@ export default {
 
 .forecast-temperature,
 .forecast-wind {
+  margin-top: 0;
   margin-bottom: .2em;
   padding-bottom: .1em;
   border-bottom: 1px solid #fff;
 }
+
+@media (max-width: 1400px) {
+  #weather {
+     -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
 </style>

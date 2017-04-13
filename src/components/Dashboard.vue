@@ -4,20 +4,21 @@
 
     <div id="dashboard-plugins">
       <div id="settings-wrapper">
-        <div id="settings-content" v-if="settings.enabled">
-          <button type="button" @click.prevent="settings.clock.enabled = !settings.clock.enabled" class="clock-toggle button">Toggle clock</button>
-          <button type="button" @click.prevent="settings.weather.enabled = !settings.weather.enabled" class="weather-toggle button">Toggle weather</button>
-          <div>
-            <label for="tags" class="label">Tags</label>
-            <input id="tags" class="text" type="text" v-model="settings.background.tags"/>
+        <transition name="fade">
+          <div id="settings-content" v-if="settings.enabled">
+            <button type="button" v-bind:class="{ active : settings.clock.enabled}" @click.prevent="settings.clock.enabled = !settings.clock.enabled" class="clock-toggle button">Clock</button>
+            <button type="button" v-bind:class="{ active : settings.weather.enabled}" @click.prevent="settings.weather.enabled = !settings.weather.enabled" class="weather-toggle button">Weather</button>
+            <div>
+              <label for="tags" class="label">Tags</label>
+              <input id="tags" class="text" type="text" v-model="settings.background.tags"/>
+            </div>
+            <button type="button" @click.prevent="save()" class="button">Save</button>
+            <button type="button" @click.prevent="clear()" class="button">Forget</button>
           </div>
-          <button type="button" @click.prevent="save()" class="button">Save</button>
-          <button type="button" @click.prevent="clear()" class="button">Forget</button>
-        </div>
-
-        <button @click.prevent="settings.enabled = !settings.enabled" class="settings-toggle button">{{ settings.enabled ? 'X' : 'Config'}}</button>
+        </transition>
+        
+        <button @click.prevent="settings.enabled = !settings.enabled" class="settings-toggle button">{{ settings.enabled ? 'X' : 'C'}}</button>
       </div>
-      
 
       <div id="clock-wrapper" class="wrapper">
         <clock v-if="settings.clock.enabled"></clock>
@@ -102,6 +103,14 @@ export default {
 </script>
 
 <style scoped>
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}
+
 h1, h2 {
   font-weight: normal;
 }
@@ -166,6 +175,12 @@ html,body {
   margin-right: 20px;
 }
 
+.button.active {
+  border-color: #141E30;
+  background: #141E30;
+  color: #fff;
+}
+
 #tags {
   color: #666;
   padding: 5px;
@@ -183,4 +198,16 @@ html,body {
 a {
   color: #42b983;
 }
+
+
+@media (max-width: 1400px) {
+  #dashboard-plugins {
+     -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
 </style>

@@ -2,8 +2,8 @@
   <div id="background" v-if="currentPhoto" v-bind:style="{backgroundImage: 'url(' + currentPhoto.urls.regular + ')'}">
     <!--<h2 v-html="tags"></h2>-->
     <p class="background-author">
-      Photo by <a v-bind:href="currentPhoto.user.links.html"><span v-html="currentPhoto.user.username"></span></a> / 
-      <a href="http://unsplash.com">Unsplash</a> / <a href="#" @click.prevent="randomizePhoto()">randomize photo</a>
+      Photo by <a v-bind:href="currentPhoto.user.links.html + '?utm_source=newtab-vue&utm_medium=referral&utm_campaign=api-credit'"><span v-html="currentPhoto.user.username"></span></a> / 
+      <a href="http://unsplash.com?utm_source=newtab-vue&utm_medium=referral&utm_campaign=api-credit">Unsplash</a> / <a href="#" @click.prevent="randomizePhoto()">randomize photo</a>
     </p>
   </div>
 </template>
@@ -72,6 +72,14 @@ export default {
 
 .background-author a {
   color: #333;
+}
+
+@media (max-width: 1400px) {
+  .background-author {
+    text-align: right;
+    left: initial;
+    right: 0;
+  }
 }
 
 </style>
