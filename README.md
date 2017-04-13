@@ -2,6 +2,8 @@
 
 Locally hosted alternative for a New Tab -page for Browsers. Developed for personal use. Decided to remake with Vue the one I made previously with React. Created using vue-loader, links at the bottom below.
 
+[Demo](https://jakke-korpelainen.github.io/newtab-vue/#/)
+
 ## Features/Tech 
 - Local time & date (using moment)
 - Forecast from OpenWeatherMap,
