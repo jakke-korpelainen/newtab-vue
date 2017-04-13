@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     getWeather () {
-      if (this.location) {
+      if (this.location && this.location.latitude && this.location.longitude) {
         this.$http.get(`${this.weatherApi}&lat=${this.location.latitude}&lon=${this.location.longitude}&units=${this.unitType}`).then(response => {
           this.forecast = response
           this.valid = true

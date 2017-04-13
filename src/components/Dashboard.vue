@@ -49,7 +49,10 @@ export default {
     load () {
       var settings = localStorage.getItem('newtab-vue')
       if (settings) {
-        this.settings = JSON.parse(settings)
+        var loadedSettings = JSON.parse(settings)
+        this.settings.background = loadedSettings.background
+        this.settings.weather = loadedSettings.weather
+        this.settings.clock = loadedSettings.clock
         this.settings.enabled = false
       }
     },
@@ -62,6 +65,7 @@ export default {
     return {
       msg: 'newtab-vue',
       settings: {
+        locationType: '',
         latitude: '',
         longitude: '',
         enabled: false,
@@ -85,6 +89,15 @@ export default {
     navigator.geolocation.getCurrentPosition(position => {
       this.settings.latitude = position.coords.latitude
       this.settings.longitude = position.coords.longitude
+      this.settings.locationType = 'html5'
+    }, error => {
+      console.log(error)
+      this.$http.get('https://ipinfo.io/geo').then(response => {
+        var loc = response.loc.split(',')
+        this.settings.latitude = loc[0]
+        this.settings.longitude = loc[1]
+        this.settings.locationType = 'api'
+      })
     })
   }
 }
