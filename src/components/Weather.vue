@@ -1,17 +1,19 @@
 <template>
-  <div id="weather" v-bind:class=" { 'weather-invalid': !valid }" @click="(!valid ? getWeather() : null)">
-    <div v-if="!forecast">
-      <h2 @click="refresh()">Ladataan</h2>
+  <transition name="fade">
+    <div id="weather" v-bind:class=" { 'weather-invalid': !valid }" @click="(!valid ? getWeather() : null)">
+      <div v-if="!forecast">
+        <h3>Loading forecast</h3>
+      </div>
+      <div class="forecast" key="temperature" v-if="forecast">
+        <h2 class="forecast-temperature">{{this.forecast.body.main.temp}}<small>°C</small></h2>
+        <h3 class="location-city" v-html="forecast.body.name"></h3>
+      </div>
+      <div class="forecast" key="wind" v-if="forecast">
+        <h2 class="forecast-wind">{{this.forecast.body.wind.speed}}<small>m/s</small></h2>
+        <h3><span>Wind speed</span></h3>
+      </div>
     </div>
-    <div class="forecast" v-if="forecast">
-      <h2 class="forecast-temperature" v-html="temperature"></h2>
-      <h3 class="location-city" v-html="forecast.body.name"></h3>
-    </div>
-    <div class="forecast" v-if="forecast">
-      <h2 class="forecast-wind" v-html="wind"></h2>
-      <h3><span>Wind speed</span></h3>
-    </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -39,18 +41,12 @@ export default {
       this.valid = false
     }
   },
-  computed: {
-    temperature () {
-      return this.forecast ? this.forecast.body.main.temp + (this.unitType === 'metric' ? '°C' : '°F') : null
-    },
-    wind () {
-      return this.forecast ? this.forecast.body.wind.speed + 'm/s' : null
-    }
-  },
   methods: {
     getWeather () {
       if (this.location && this.location.latitude && this.location.longitude) {
+        console.log('Searching forecast.')
         this.$http.get(`${this.weatherApi}&lat=${this.location.latitude}&lon=${this.location.longitude}&units=${this.unitType}`).then(response => {
+          console.log('Found forecast.')
           this.forecast = response
           this.valid = true
         })
@@ -58,9 +54,12 @@ export default {
     }
   },
   mounted () {
+    console.log('Weather mounted.')
     this.interval = setInterval(this.getWeather, 60000)
+    this.getWeather()
   },
   beforeDestroy () {
+    console.log('Weather destroying.')
     clearInterval(this.interval)
   }
 }

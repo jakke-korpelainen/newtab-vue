@@ -11,7 +11,8 @@
 export default {
   name: 'background',
   props: [
-    'tags'
+    'tags',
+    'timeout'
   ],
 
   data () {
@@ -19,36 +20,55 @@ export default {
       currentTags: '',
       photos: [],
       currentPhoto: null,
-      unsplashApi: 'https://api.unsplash.com/search/photos/?client_id=fab2c3a892e7f7a0bd4734a68a2603de680a5ff6c70fb29cf2b00b82e91e14a6'
+      unsplashApi: 'https://api.unsplash.com/search/photos/?client_id=fab2c3a892e7f7a0bd4734a68a2603de680a5ff6c70fb29cf2b00b82e91e14a6',
+      interval: null
     }
   },
   watch: {
     tags (value) {
       if (value !== this.currentTags) {
+        console.log('Background tags changed.')
         this.searchPhotos()
       }
     }
   },
-  mounted () {
-    this.searchPhotos()
-  },
   methods: {
     randomizePhoto () {
-      this.currentPhoto = this.photos[Math.floor((Math.random() * this.photos.length - 1) + 1)]
+      if (this.photos && this.photos.length) {
+        console.log('Randomizing current photo.')
+        this.currentPhoto = this.photos[Math.floor((Math.random() * this.photos.length - 1) + 1)]
+      }
     },
     searchPhotos () {
-      this.$http.get(`${this.unsplashApi}&query=${this.tags}`).then(response => {
-        this.currentTags = this.tags
-        this.photos = response.body.results
-        this.randomizePhoto()
-      })
+      if (this.tags) {
+        console.log('Searching photos.')
+        this.$http.get(`${this.unsplashApi}&query=${this.tags}`).then(response => {
+          console.log('Found photos.')
+          this.currentTags = this.tags
+          this.photos = response.body.results
+          this.randomizePhoto()
+        })
+      }
     }
+  },
+  mounted () {
+    console.log('Background mounted.')
+    this.searchPhotos()
+    this.interval = setTimeout(this.randomizePhoto(), 5000)
+  },
+  beforeDestroy () {
+    console.log('Background destroying.')
+    clearInterval(this.interval)
   }
 }
 </script>
 <style scoped>
 
 #background {
+  -webkit-transition: background .5s ease-in-out;
+  -moz-transition: background .5s ease-in-out;
+  -o-transition: background .5s ease-in-out;
+  transition: background .5s ease-in-out;
   background-size: cover;
   opacity: 0.8;
   position: absolute;

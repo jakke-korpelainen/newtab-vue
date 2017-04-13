@@ -1,6 +1,6 @@
 <template>
   <div id="dashboard">
-    <background v-bind:tags="settings.background.tags"></background>
+    <background v-bind:timeout="settings.background.timeout" v-bind:tags="settings.background.tags"></background>
 
     <div id="dashboard-plugins">
       <div id="settings-wrapper">
@@ -25,7 +25,7 @@
       </div>
 
       <div id="weather-wrapper" class="wrapper">
-        <weather v-bind:location="{latitude: settings.latitude, longitude: settings.longitude} " v-if="settings.weather.enabled"></weather>
+        <weather v-if="settings.weather.enabled" v-bind:location="{latitude: settings.latitude, longitude: settings.longitude}"></weather>
       </div>
     </div>
   </div>
@@ -48,16 +48,25 @@ export default {
       localStorage.removeItem('newtab-vue')
     },
     load () {
+      console.log('Checking if settings exist in local storage.')
       var settings = localStorage.getItem('newtab-vue')
       if (settings) {
+        console.log('Existing settings found, applying.')
+        // apply values
         var loadedSettings = JSON.parse(settings)
         this.settings.background = loadedSettings.background
         this.settings.weather = loadedSettings.weather
         this.settings.clock = loadedSettings.clock
         this.settings.enabled = false
+      } else {
+        console.log('Existing settings not found, applying default values.')
+        // default values
+        this.settings.background.tags = 'hongkong'
+        this.settings.weather.enabled = false
       }
     },
     save () {
+      console.log('Saving current settings to local storage.')
       localStorage.setItem('newtab-vue', JSON.stringify(this.settings))
       this.settings.enabled = false
     }
@@ -71,7 +80,8 @@ export default {
         longitude: '',
         enabled: false,
         background: {
-          tags: 'hongkong'
+          tags: '',
+          timeout: 1000
         },
         clock: {
           enabled: true
@@ -84,18 +94,26 @@ export default {
     }
   },
   mounted () {
+    console.log('Dashboard mounted.')
     this.load()
+    console.log('Attempting html5 geo-location.')
     navigator.geolocation.getCurrentPosition(position => {
+      console.log('Location success using html5.')
       this.settings.latitude = position.coords.latitude
       this.settings.longitude = position.coords.longitude
       this.settings.locationType = 'html5'
     }, error => {
       console.log(error)
+      console.log('Location failed using html5.')
       this.$http.get('https://ipinfo.io/geo').then(response => {
+        console.log('Attempting geo-location from api.')
         var loc = response.loc.split(',')
         this.settings.latitude = loc[0]
         this.settings.longitude = loc[1]
         this.settings.locationType = 'api'
+      }, response => {
+        console.log('Location failed using api.')
+        throw response
       })
     })
   }
@@ -103,13 +121,6 @@ export default {
 </script>
 
 <style scoped>
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .2s
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
-  opacity: 0
-}
 
 h1, h2 {
   font-weight: normal;

@@ -1,8 +1,10 @@
 <template>
-  <div id="clock">
-    <h2 class="time" v-html="time">Time</h2>
-    <h3 class="date" v-html="date">Date</h3>
-  </div>
+  <transition name="fade">
+    <div id="clock">
+      <h2 class="time" v-html="time">Time</h2>
+      <h3 class="date" v-html="date">Date</h3>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -25,12 +27,14 @@ export default {
     }
   },
   mounted () {
+    console.log('Clock mounted.')
     moment.locale('en')
     this.interval = setInterval(this.getTime, 1000)
     this.getTime()
     this.getDate()
   },
   beforeDestroy () {
+    console.log('Clock destroying.')
     clearInterval(this.interval)
   }
 }
