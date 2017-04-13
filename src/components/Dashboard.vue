@@ -10,7 +10,7 @@
             <button type="button" v-bind:class="{ active : settings.weather.enabled}" @click.prevent="settings.weather.enabled = !settings.weather.enabled" class="weather-toggle button">Weather</button>
             <div>
               <label for="tags" class="label">Tags</label>
-              <input id="tags" class="text" type="text" v-model="settings.background.tags"/>
+              <input id="tags" class="text" type="text" v-on:blur="settings.background.tags = settings.tags" v-model="settings.tags"/>
             </div>
             <button type="button" @click.prevent="save()" class="button">Save</button>
             <button type="button" @click.prevent="clear()" class="button">Forget</button>
@@ -43,41 +43,13 @@ export default {
     'weather': Weather,
     'background': Background
   },
-  methods: {
-    clear () {
-      localStorage.removeItem('newtab-vue')
-    },
-    load () {
-      console.log('Checking if settings exist in local storage.')
-      var settings = localStorage.getItem('newtab-vue')
-      if (settings) {
-        console.log('Existing settings found, applying.')
-        // apply values
-        var loadedSettings = JSON.parse(settings)
-        this.settings.background = loadedSettings.background
-        this.settings.weather = loadedSettings.weather
-        this.settings.clock = loadedSettings.clock
-        this.settings.enabled = false
-      } else {
-        console.log('Existing settings not found, applying default values.')
-        // default values
-        this.settings.background.tags = 'hongkong'
-        this.settings.weather.enabled = false
-      }
-    },
-    save () {
-      console.log('Saving current settings to local storage.')
-      localStorage.setItem('newtab-vue', JSON.stringify(this.settings))
-      this.settings.enabled = false
-    }
-  },
   data () {
     return {
-      msg: 'newtab-vue',
       settings: {
         locationType: '',
         latitude: '',
         longitude: '',
+        tags: '',
         enabled: false,
         background: {
           tags: '',
@@ -91,6 +63,35 @@ export default {
           interval: 60000
         }
       }
+    }
+  },
+  methods: {
+    clear () {
+      localStorage.removeItem('newtab-vue')
+    },
+    load () {
+      console.log('Checking if settings exist in local storage.')
+      var settings = localStorage.getItem('newtab-vue')
+      if (settings) {
+        console.log('Existing settings found, applying.')
+        // apply values
+        var loadedSettings = JSON.parse(settings)
+        this.settings.background = loadedSettings.background
+        this.settings.tags = this.settings.background.tags
+        this.settings.weather = loadedSettings.weather
+        this.settings.clock = loadedSettings.clock
+        this.settings.enabled = false
+      } else {
+        console.log('Existing settings not found, applying default values.')
+        // default values
+        this.settings.tags = this.settings.background.tags = 'hongkong'
+        this.settings.weather.enabled = false
+      }
+    },
+    save () {
+      console.log('Saving current settings to local storage.')
+      localStorage.setItem('newtab-vue', JSON.stringify(this.settings))
+      this.settings.enabled = false
     }
   },
   mounted () {
