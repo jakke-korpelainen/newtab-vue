@@ -28,7 +28,7 @@ export default {
       forecast: null,
       interval: null,
       unitType: 'metric',
-      weatherApi: 'http://api.openweathermap.org/data/2.5/weather?APPID=732e78b853a08a9dfdeeba03592cf1aa'
+      weatherApi: 'https://api.openweathermap.org/data/2.5/weather?APPID=732e78b853a08a9dfdeeba03592cf1aa'
     }
   },
   watch: {

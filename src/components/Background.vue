@@ -3,7 +3,7 @@
     <!--<h2 v-html="tags"></h2>-->
     <p class="background-author">
       Photo by <a v-bind:href="currentPhoto.user.links.html + '?utm_source=newtab-vue&utm_medium=referral&utm_campaign=api-credit'"><span v-html="currentPhoto.user.username"></span></a> / 
-      <a href="http://unsplash.com?utm_source=newtab-vue&utm_medium=referral&utm_campaign=api-credit">Unsplash</a> / <a href="#" @click.prevent="randomizePhoto()">randomize photo</a>
+      <a href="https://unsplash.com?utm_source=newtab-vue&utm_medium=referral&utm_campaign=api-credit">Unsplash</a> / <a href="#" @click.prevent="randomizePhoto()">randomize photo</a>
     </p>
   </div>
 </template>
