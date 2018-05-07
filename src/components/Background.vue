@@ -37,6 +37,7 @@ export default {
       if (this.photos && this.photos.length) {
         console.log('Randomizing current photo.')
         this.currentPhoto = this.photos[Math.floor((Math.random() * this.photos.length - 1) + 1)]
+        this.$http.get(`${this.currentPhoto.links.download_location}?client_id=fab2c3a892e7f7a0bd4734a68a2603de680a5ff6c70fb29cf2b00b82e91e14a6`)
       }
     },
     searchPhotos () {
